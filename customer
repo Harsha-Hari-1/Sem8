@@ -1,0 +1,77 @@
+
+Imports System.Data.SqlClient
+Imports System.Data
+
+Public Class customer
+    Inherits System.Web.UI.Page
+    Dim con As New SqlConnection
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        con.ConnectionString = "Data Source=HARSHA\SQLEXPRESS;Initial Catalog=electricshop;User ID=sa;Password=123"
+        con.Open()
+        Dim dp As DataTable = New DataTable
+        Dim strsts As String
+        strsts = "select * from Customer"
+        Dim cmdshowwdp As SqlCommand = New SqlCommand(strsts, con)
+        Dim adp As SqlDataAdapter = New SqlDataAdapter(cmdshowwdp)
+        adp.Fill(dp)
+        DropDownList1.DataSource = dp
+        DropDownList1.DataTextField = "name"
+        DropDownList1.DataBind()
+    End Sub
+
+    Protected Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim instr As String
+        instr = "insert into [Customer](name,phone_no) values ('" + TextBox1.Text + "' , ' " + TextBox2.Text + " ')"
+        Dim cmdemp As SqlCommand = New SqlCommand(instr, con)
+        cmdemp.ExecuteNonQuery()
+        Response.Write(" <script> alert('Data saved'); </script>")
+        TextBox1.Text = ""
+        TextBox2.Text = ""
+    End Sub
+
+    Protected Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Dim strst As String
+        strst = "select * from Customer"
+        Dim cmdshow As SqlCommand = New SqlCommand(strst, con)
+        Dim sdr As SqlDataReader = cmdshow.ExecuteReader()
+        While sdr.Read()
+            TextBox1.Text = sdr.GetValue(1).ToString()
+        End While
+    End Sub
+
+    Protected Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        Dim dt As DataTable = New DataTable
+        Dim strsts As String
+        strsts = "select * from Customer"
+        Dim cmdshoww As SqlCommand = New SqlCommand(strsts, con)
+        Dim adp As SqlDataAdapter = New SqlDataAdapter(cmdshoww)
+        adp.Fill(dt)
+        TextBox1.Text = dt.Rows(0)(1).ToString()
+    End Sub
+
+    Protected Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        Dim dp As DataTable = New DataTable
+        Dim strsts As String
+        strsts = "select * from Customer"
+        Dim cmdshowwdp As SqlCommand = New SqlCommand(strsts, con)
+        Dim adp As SqlDataAdapter = New SqlDataAdapter(cmdshowwdp)
+        adp.Fill(dp)
+        DropDownList1.DataSource = dp
+        DropDownList1.DataTextField = "name"
+        DropDownList1.DataBind()
+    End Sub
+
+    Protected Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Dim dp As DataTable = New DataTable
+        Dim strsts As String
+        strsts = "select * from Customer"
+        Dim cmdshowwdp As SqlCommand = New SqlCommand(strsts, con)
+        Dim adp As SqlDataAdapter = New SqlDataAdapter(cmdshowwdp)
+        adp.Fill(dp)
+        ListBox1.DataSource = dp
+        ListBox1.DataTextField = "name"
+        ListBox1.DataBind()
+
+    End Sub
+End Class
